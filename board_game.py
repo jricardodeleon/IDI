@@ -10,6 +10,61 @@ import numpy as np
 from sys import exit
 
 
+class nodo:
+    def __init__(self,info):
+        self.dato = info
+        self.left = None
+        self.right = None
+        self.up = None
+        self.down = None
+        
+        
+    def minimax(self, tipo, prof):
+        
+        # caso base, si no hay hijos regresa la raiz y revisa profundidad
+        if prof == 1:
+            return self, "Hoja"
+        
+        if self.left is None:
+                if self.right is None:
+                    return self,'hoja'
+                return self.right.minimax(not tipo,prof-1)
+            
+        if self.up is None:
+                if self.down is None:
+                    return self,'hoja'
+                return self.down.minimax(not tipo,prof-1)
+            
+        # si hay hijos, corre minimax para cada lado y para cada hijo
+        
+        nleft,_ = self.left.minimax(not tipo, prof -1)
+        nright,_ = self.right.minimax(not tipo, prof -1)
+        nup,_ = self.up.minimax(not tipo, prof -1)
+        ndown,_ = self.down.minimax(not tipo, prof -1)
+        
+        # comparar resultados
+        
+        if tipo:
+            if nleft.dato<nright.dato:
+                return nright,'right'
+            return nleft,'left'
+             
+            if nleft.dato>nright.dato:
+                return nright,'right'
+            return nleft,'left'
+        
+            if nup.dato<ndown.dato:
+                return nup,'up'
+            return ndown,'down'
+             
+            if nup.dato>ndown.dato:
+                return nup,'up'
+            return ndown,'down'
+    
+    
+    
+    
+
 class Board_game():
     
     def __init__(self, size):
